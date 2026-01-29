@@ -28,6 +28,10 @@ interface Event {
   start_time: string
   end_time: string
   is_featured: boolean
+  // Yeni alanlar
+  source_type?: 'verified' | 'sourced' | 'community'
+  source_url?: string
+  booking_type?: 'none' | 'external' | 'minimaply'
   category?: { id: string; name: string; slug: string; icon: string }
   city?: { id: string; name: string; slug: string }
   district?: { id: string; name: string; slug: string }
@@ -497,14 +501,30 @@ function EventCard({ event }: { event: Event }) {
         </div>
         
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex gap-2">
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+          {/* Source Badge */}
+          {event.source_type === 'verified' && (
+            <span className="bg-green-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+              ✓ Doğrulanmış
+            </span>
+          )}
+          {event.source_type === 'sourced' && (
+            <span className="bg-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+              🔗 Kaynaktan
+            </span>
+          )}
+          {event.source_type === 'community' && (
+            <span className="bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+              💡 İpucu
+            </span>
+          )}
           {event.is_featured && (
-            <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+            <span className="bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow-sm">
               ⭐ Öne Çıkan
             </span>
           )}
           {event.is_free && (
-            <span className="bg-white/90 backdrop-blur-sm text-primary-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-primary-200">
+            <span className="bg-white/90 backdrop-blur-sm text-primary-600 text-xs font-semibold px-2 py-0.5 rounded-full border border-primary-200">
               Ücretsiz
             </span>
           )}

@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, usePathname } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Clock, Calendar, Users, ArrowLeft, Share2, Heart, Phone, ExternalLink, Home, Map, ChevronRight } from 'lucide-react'
+import { MapPin, Clock, Calendar, Users, ArrowLeft, Share2, Heart, Phone, ExternalLink, Home, Map, ChevronRight, AlertCircle, CheckCircle, Link2, Lightbulb } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 interface Event {
@@ -29,6 +29,13 @@ interface Event {
   end_time: string
   capacity?: number
   is_featured: boolean
+  // Yeni alanlar
+  source_type: 'verified' | 'sourced' | 'community'
+  source_url?: string
+  booking_type: 'none' | 'external' | 'minimaply'
+  booking_url?: string
+  status: string
+  // Relations
   category?: { id: string; name: string; slug: string; icon: string }
   city?: { id: string; name: string; slug: string }
   district?: { id: string; name: string; slug: string }
@@ -59,7 +66,7 @@ export default function EventDetailPage() {
           provider:providers(id, name, phone, email, is_verified)
         `)
         .eq('slug', slug)
-        .eq('is_active', true)
+        .eq('status', 'active')
         .single()
 
       if (error) {
@@ -80,7 +87,7 @@ export default function EventDetailPage() {
             `)
             .eq('category_id', data.category_id)
             .eq('city_id', data.city_id)
-            .eq('is_active', true)
+            .eq('status', 'active')
             .neq('id', data.id)
             .limit(3)
 
@@ -112,6 +119,32 @@ export default function EventDetailPage() {
     const startDate = new Date(start)
     const endDate = new Date(end)
     return `${startDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })} - ${endDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}`
+  }
+
+  // Source badge config
+  const getSourceBadge = (sourceType: string) => {
+    switch (sourceType) {
+      case 'verified':
+        return {
+          icon: <CheckCircle className="w-4 h-4" />,
+          label: 'Doğrulanmış',
+          className: 'bg-green-100 text-green-700 border-green-200'
+        }
+      case 'sourced':
+        return {
+          icon: <Link2 className="w-4 h-4" />,
+          label: 'Kaynaktan',
+          className: 'bg-blue-100 text-blue-700 border-blue-200'
+        }
+      case 'community':
+        return {
+          icon: <Lightbulb className="w-4 h-4" />,
+          label: 'Topluluk İpucu',
+          className: 'bg-amber-100 text-amber-700 border-amber-200'
+        }
+      default:
+        return null
+    }
   }
 
   if (loading) {
@@ -146,6 +179,8 @@ export default function EventDetailPage() {
     )
   }
 
+  const sourceBadge = getSourceBadge(event.source_type)
+
   return (
     <div className="min-h-screen bg-surface pb-24 md:pb-8">
       {/* Header */}
@@ -179,7 +214,14 @@ export default function EventDetailPage() {
             <span className="text-7xl md:text-8xl">{event.category?.icon}</span>
             
             {/* Badges */}
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+              {/* Source Badge */}
+              {sourceBadge && (
+                <span className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-full border ${sourceBadge.className}`}>
+                  {sourceBadge.icon}
+                  {sourceBadge.label}
+                </span>
+              )}
               {event.is_featured && (
                 <span className="bg-amber-500 text-white text-sm font-semibold px-3 py-1.5 rounded-full shadow-sm">
                   ⭐ Öne Çıkan
@@ -205,6 +247,44 @@ export default function EventDetailPage() {
             <h1 className="text-2xl md:text-3xl font-bold text-warm-900 mb-4">
               {event.title}
             </h1>
+
+            {/* Source Disclaimer */}
+            {event.source_type === 'sourced' && (
+              <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-100 rounded-xl mb-6">
+                <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-blue-700">
+                    Bu etkinlik bilgileri herkese açık kaynaklardan derlenmiştir. 
+                    Güncel detaylar için kaynağı kontrol edin.
+                  </p>
+                  {event.source_url && (
+                    <a 
+                      href={event.source_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 mt-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Kaynağa Git
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {event.source_type === 'community' && (
+              <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-100 rounded-xl mb-6">
+                <Lightbulb className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-amber-700">
+                    Bu etkinlik henüz doğrulanmadı. Topluluktan gelen bir ipucu olarak paylaşılmıştır.
+                  </p>
+                  <button className="text-sm font-medium text-amber-600 hover:text-amber-700 mt-2">
+                    Doğrulamaya yardımcı ol →
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Quick Info */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -265,8 +345,8 @@ export default function EventDetailPage() {
               )}
             </div>
 
-            {/* Provider */}
-            {event.provider && (
+            {/* Provider - Only for verified */}
+            {event.source_type === 'verified' && event.provider && (
               <div className="mb-6">
                 <h2 className="font-semibold text-warm-800 mb-3">Sağlayıcı</h2>
                 <div className="flex items-center justify-between p-4 bg-warm-50 rounded-xl">
@@ -278,7 +358,9 @@ export default function EventDetailPage() {
                       <div className="flex items-center gap-2">
                         <p className="font-medium text-warm-800">{event.provider.name}</p>
                         {event.provider.is_verified && (
-                          <span className="text-xs bg-primary-100 text-primary-600 px-2 py-0.5 rounded-full">✓ Doğrulanmış</span>
+                          <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" /> Doğrulanmış
+                          </span>
                         )}
                       </div>
                       {event.provider.phone && (
@@ -309,6 +391,19 @@ export default function EventDetailPage() {
             </div>
           </div>
         </div>
+
+        {/* Provider CTA for non-verified events */}
+        {event.source_type !== 'verified' && (
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 mb-6 text-white">
+            <h3 className="font-bold text-lg mb-2">Bu etkinliğin sahibi misiniz?</h3>
+            <p className="text-primary-100 text-sm mb-4">
+              MiniMaply'de yer alarak daha fazla aileye ulaşın. Etkinliğinizi doğrulayın ve rezervasyon almaya başlayın.
+            </p>
+            <button className="bg-white text-primary-600 font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-50 transition-colors">
+              Etkinliğimi Ekle
+            </button>
+          </div>
+        )}
 
         {/* Similar Events */}
         {similarEvents.length > 0 && (
@@ -342,20 +437,76 @@ export default function EventDetailPage() {
         )}
       </main>
 
-      {/* Fixed Bottom CTA - Mobile */}
+      {/* Fixed Bottom CTA - Varies by booking_type */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-warm-100 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-        <button className="w-full h-14 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-          <Phone className="w-5 h-5" strokeWidth={2} />
-          Rezervasyon Yap
-        </button>
+        {event.booking_type === 'minimaply' ? (
+          <button className="w-full h-14 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
+            <Phone className="w-5 h-5" strokeWidth={2} />
+            Rezervasyon Yap
+          </button>
+        ) : event.booking_type === 'external' && event.booking_url ? (
+          <a 
+            href={event.booking_url}
+            target="_blank"
+            rel="noopener noreferrer" 
+            className="w-full h-14 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            <ExternalLink className="w-5 h-5" strokeWidth={2} />
+            Bilet Al (Dış Site)
+          </a>
+        ) : event.source_url ? (
+          <a 
+            href={event.source_url}
+            target="_blank"
+            rel="noopener noreferrer" 
+            className="w-full h-14 bg-warm-100 hover:bg-warm-200 text-warm-700 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            <ExternalLink className="w-5 h-5" strokeWidth={2} />
+            Kaynağa Git
+          </a>
+        ) : event.provider?.phone ? (
+          <a 
+            href={`tel:${event.provider.phone.replace(/\s/g, '')}`}
+            className="w-full h-14 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            <Phone className="w-5 h-5" strokeWidth={2} />
+            Ara: {event.provider.phone}
+          </a>
+        ) : (
+          <div className="text-center text-warm-500 text-sm py-2">
+            Rezervasyon bilgisi için kaynağı kontrol edin
+          </div>
+        )}
       </div>
 
       {/* Desktop CTA */}
       <div className="hidden md:block fixed bottom-8 right-8">
-        <button className="h-14 px-8 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-          <Phone className="w-5 h-5" strokeWidth={2} />
-          Rezervasyon Yap
-        </button>
+        {event.booking_type === 'minimaply' ? (
+          <button className="h-14 px-8 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
+            <Phone className="w-5 h-5" strokeWidth={2} />
+            Rezervasyon Yap
+          </button>
+        ) : event.booking_type === 'external' && event.booking_url ? (
+          <a 
+            href={event.booking_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-14 px-8 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+          >
+            <ExternalLink className="w-5 h-5" strokeWidth={2} />
+            Bilet Al
+          </a>
+        ) : event.source_url ? (
+          <a 
+            href={event.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-14 px-8 bg-warm-100 hover:bg-warm-200 text-warm-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+          >
+            <ExternalLink className="w-5 h-5" strokeWidth={2} />
+            Kaynağa Git
+          </a>
+        ) : null}
       </div>
     </div>
   )

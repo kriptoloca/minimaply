@@ -32,6 +32,11 @@ export interface Provider {
   is_verified: boolean
 }
 
+// Source types
+export type SourceType = 'verified' | 'sourced' | 'community'
+export type BookingType = 'none' | 'external' | 'minimaply'
+export type EventStatus = 'active' | 'unverified' | 'expired' | 'removed'
+
 export interface Event {
   id: string
   title: string
@@ -41,7 +46,7 @@ export interface Event {
   category_id: string
   city_id: string
   district_id: string
-  provider_id: string
+  provider_id?: string
   
   address?: string
   lat?: number
@@ -58,9 +63,16 @@ export interface Event {
   end_time: string
   
   capacity?: number
-  registered_count: number
+  registered_count?: number
   is_active: boolean
   is_featured: boolean
+  
+  // Source & Booking
+  source_type: SourceType
+  source_url?: string
+  booking_type: BookingType
+  booking_url?: string
+  status: EventStatus
   
   image_url?: string
   gallery_urls?: string[]
@@ -81,6 +93,7 @@ export interface EventFilters {
   minAge?: number
   maxAge?: number
   isFree?: boolean
-  date?: 'today' | 'tomorrow' | 'weekend' | 'all'
+  date?: 'today' | 'weekend' | 'week' | 'all'
   search?: string
+  sourceType?: SourceType
 }
