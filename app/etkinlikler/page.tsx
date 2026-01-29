@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Search, Filter, X, Calendar, Clock, ChevronDown, Home, Map, Heart, User } from 'lucide-react'
@@ -89,8 +90,8 @@ export default function EtkinliklerPage() {
     return true
   })
 
-  // Aktif filtre sayısı
-  const activeFilterCount = [selectedCity, selectedCategory, selectedDate, isFreeOnly].filter(Boolean).length
+  // Aktif filtre sayısı (date henüz implement edilmedi, sayma)
+  const activeFilterCount = [selectedCity, selectedCategory, isFreeOnly].filter(Boolean).length
 
   // Filtreleri temizle
   const clearFilters = () => {
@@ -356,15 +357,8 @@ export default function EtkinliklerPage() {
         )}
       </div>
 
-      {/* Bottom Navigation (Mobile) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-warm-100 z-40">
-        <div className="flex justify-around items-center h-14 pb-[env(safe-area-inset-bottom)]">
-          <BottomNavItem href="/" icon={<Home className="w-5 h-5" strokeWidth={2} />} label="Ana Sayfa" />
-          <BottomNavItem href="/etkinlikler" icon={<Calendar className="w-5 h-5" strokeWidth={2} />} label="Etkinlikler" active />
-          <BottomNavItem href="/harita" icon={<Map className="w-5 h-5" strokeWidth={2} />} label="Harita" />
-          <BottomNavItem href="/favoriler" icon={<Heart className="w-5 h-5" strokeWidth={2} />} label="Favoriler" />
-        </div>
-      </nav>
+      {/* Bottom Navigation (Mobile) - Dinamik active state */}
+      <BottomNav />
     </div>
   )
 }
@@ -374,20 +368,27 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/etkinlikler/${event.slug}`}
-      className="bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden hover:shadow-soft-lg hover:-translate-y-1 transition-all group"
+      className="bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden md:hover:shadow-soft-lg md:hover:-translate-y-1 transition-all group"
     >
-      {/* Image Placeholder - İyileştirildi */}
+      {/* Image Placeholder - Title overlay eklendi */}
       <div className="aspect-[16/10] bg-gradient-to-b from-primary-50 via-primary-100 to-primary-200/50 flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Soft noise texture effect */}
+        {/* Soft pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)"/%3E%3C/svg%3E")' }} />
         
-        {/* Emoji - biraz yukarı */}
-        <span className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{event.category?.icon || '🎉'}</span>
+        {/* Emoji */}
+        <span className="text-5xl mb-2 group-hover:scale-110 transition-transform duration-300">{event.category?.icon || '🎉'}</span>
         
-        {/* Alt gradient overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/40 to-transparent" />
+        {/* Category name */}
+        <span className="text-sm font-medium text-primary-700/70">{event.category?.name}</span>
         
-        {/* Badges - Yeni renk sistemi */}
+        {/* Bottom gradient overlay with title */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/90 to-transparent pt-8 pb-3 px-4">
+          <h3 className="font-semibold text-warm-800 text-center truncate">
+            {event.title}
+          </h3>
+        </div>
+        
+        {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
           {event.is_featured && (
             <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
@@ -404,17 +405,6 @@ function EventCard({ event }: { event: Event }) {
 
       {/* Content */}
       <div className="p-4">
-        {/* Category */}
-        <div className="flex items-center gap-1.5 text-xs text-warm-500 mb-2">
-          <span>{event.category?.icon}</span>
-          <span>{event.category?.name}</span>
-        </div>
-
-        {/* Title */}
-        <h3 className="font-semibold text-warm-800 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-          {event.title}
-        </h3>
-
         {/* Location */}
         <div className="flex items-center gap-1.5 text-sm text-warm-500 mb-2">
           <MapPin className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
@@ -439,6 +429,22 @@ function EventCard({ event }: { event: Event }) {
         </div>
       </div>
     </Link>
+  )
+}
+
+// Bottom Nav - Dinamik active state
+function BottomNav() {
+  const pathname = usePathname()
+  
+  return (
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-warm-100 z-40">
+      <div className="flex justify-around items-center h-14 pb-[env(safe-area-inset-bottom)]">
+        <BottomNavItem href="/" icon={<Home className="w-5 h-5" strokeWidth={2} />} label="Ana Sayfa" active={pathname === '/'} />
+        <BottomNavItem href="/etkinlikler" icon={<Calendar className="w-5 h-5" strokeWidth={2} />} label="Etkinlikler" active={pathname?.startsWith('/etkinlikler')} />
+        <BottomNavItem href="/harita" icon={<Map className="w-5 h-5" strokeWidth={2} />} label="Harita" active={pathname === '/harita'} />
+        <BottomNavItem href="/favoriler" icon={<Heart className="w-5 h-5" strokeWidth={2} />} label="Favoriler" active={pathname === '/favoriler'} />
+      </div>
+    </nav>
   )
 }
 
