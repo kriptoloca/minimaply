@@ -229,14 +229,17 @@ export default function EtkinliklerPage() {
       {filterOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex items-end">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setFilterOpen(false)} />
-          <div className="relative w-full bg-white rounded-t-3xl shadow-xl max-h-[85vh] overflow-auto">
-            <div className="sticky top-0 bg-white p-4 border-b border-warm-100 flex items-center justify-between">
+          <div className="relative w-full bg-white rounded-t-3xl shadow-xl max-h-[85vh] flex flex-col">
+            {/* Header */}
+            <div className="flex-shrink-0 p-4 border-b border-warm-100 flex items-center justify-between">
               <h3 className="font-bold text-lg text-warm-800">Filtrele</h3>
               <button onClick={() => setFilterOpen(false)} className="p-2 text-warm-500 min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <div className="p-5 space-y-5">
+            
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-auto p-5 space-y-5">
               {/* Şehir */}
               <div>
                 <label className="text-sm font-medium text-warm-600 mb-2 block">📍 Şehir</label>
@@ -309,22 +312,22 @@ export default function EtkinliklerPage() {
                   </button>
                 </div>
               </div>
+            </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={clearFilters}
-                  className="flex-1 h-12 rounded-xl border border-warm-200 text-warm-600 font-semibold"
-                >
-                  Temizle
-                </button>
-                <button
-                  onClick={() => setFilterOpen(false)}
-                  className="flex-1 h-12 rounded-xl bg-primary-500 text-white font-semibold"
-                >
-                  {filteredEvents.length} Etkinlik Göster
-                </button>
-              </div>
+            {/* Sticky Bottom Buttons */}
+            <div className="flex-shrink-0 p-4 border-t border-warm-100 bg-white flex gap-3">
+              <button
+                onClick={clearFilters}
+                className="flex-1 h-12 rounded-xl border border-warm-200 text-warm-600 font-semibold hover:bg-warm-50 transition-colors"
+              >
+                Temizle
+              </button>
+              <button
+                onClick={() => setFilterOpen(false)}
+                className="flex-[2] h-12 rounded-xl bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-colors"
+              >
+                {filteredEvents.length} Etkinlik Göster
+              </button>
             </div>
           </div>
         </div>
@@ -373,19 +376,26 @@ function EventCard({ event }: { event: Event }) {
       href={`/etkinlikler/${event.slug}`}
       className="bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden hover:shadow-soft-lg hover:-translate-y-1 transition-all group"
     >
-      {/* Image Placeholder */}
-      <div className="aspect-[16/10] bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center relative">
-        <span className="text-5xl">{event.category?.icon || '🎉'}</span>
+      {/* Image Placeholder - İyileştirildi */}
+      <div className="aspect-[16/10] bg-gradient-to-b from-primary-50 via-primary-100 to-primary-200/50 flex flex-col items-center justify-center relative overflow-hidden">
+        {/* Soft noise texture effect */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)"/%3E%3C/svg%3E")' }} />
         
-        {/* Badges */}
+        {/* Emoji - biraz yukarı */}
+        <span className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{event.category?.icon || '🎉'}</span>
+        
+        {/* Alt gradient overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/40 to-transparent" />
+        
+        {/* Badges - Yeni renk sistemi */}
         <div className="absolute top-3 left-3 flex gap-2">
           {event.is_featured && (
-            <span className="bg-yellow-400 text-yellow-900 text-xs font-medium px-2 py-1 rounded-full">
+            <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
               ⭐ Öne Çıkan
             </span>
           )}
           {event.is_free && (
-            <span className="bg-primary-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+            <span className="bg-white/90 backdrop-blur-sm text-primary-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-primary-200">
               Ücretsiz
             </span>
           )}
@@ -432,17 +442,23 @@ function EventCard({ event }: { event: Event }) {
   )
 }
 
-// Bottom Nav Item
+// Bottom Nav Item - Aktif animasyon
 function BottomNavItem({ href, icon, label, active = false }: { href: string; icon: React.ReactNode; label: string; active?: boolean }) {
   return (
     <Link
       href={href}
-      className={`flex flex-col items-center justify-center gap-0.5 min-w-[60px] min-h-[44px] transition-colors ${
-        active ? 'text-primary-600' : 'text-warm-400'
+      className={`flex flex-col items-center justify-center gap-0.5 min-w-[60px] min-h-[44px] transition-all duration-200 ${
+        active ? 'text-primary-600 scale-105' : 'text-warm-400 hover:text-warm-500'
       }`}
     >
-      {icon}
-      <span className="text-[10px] font-medium">{label}</span>
+      <div className="relative">
+        {icon}
+        {/* Aktif dot */}
+        {active && (
+          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary-500 rounded-full" />
+        )}
+      </div>
+      <span className={`text-[10px] font-medium ${active ? 'font-semibold' : ''}`}>{label}</span>
     </Link>
   )
 }

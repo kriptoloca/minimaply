@@ -9,21 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 5️⃣ SURFACE - Kırık beyaz zemin
-        surface: '#F7FAF9',
+        // 5️⃣ SURFACE - Daha warm neutral
+        surface: '#F8F9F8',
         
-        // PRIMARY - Mint/Teal (CTA, başlık vurgusu)
+        // PRIMARY - Mint/Teal (%15 koyulaştırıldı)
         primary: {
-          50: '#F0FAF8',
-          100: '#D5F2ED',
-          200: '#ABE5DB',
-          300: '#7AD4C5',
-          400: '#4DBFAB',
-          500: '#2FB7A0',
-          600: '#249C88',
-          700: '#1D7F6F',
-          800: '#186459',
-          900: '#134E46',
+          50: '#ECFDF8',
+          100: '#D1FAE8',
+          200: '#A7F3D5',
+          300: '#6EE7BC',
+          400: '#34D39E',
+          500: '#22B88A', // Koyulaştırıldı (eski #2FB7A0)
+          600: '#1A9A72', // Hover - daha koyu
+          700: '#167D5E',
+          800: '#14644C',
+          900: '#12523F',
         },
         // 5️⃣ CORAL - İkincil vurgu (fiyat, "bugün", rozet)
         coral: {
@@ -38,18 +38,18 @@ const config: Config = {
           800: '#9A3D00',
           900: '#7C3100',
         },
-        // Sıcak Nötr - Text için
+        // Sıcak Nötr - Daha warm
         warm: {
-          50: '#FAFAFA',
-          100: '#F5F5F4',
-          200: '#E7E5E4',
-          300: '#D6D3D1',
-          400: '#A8A29E',
-          500: '#78716C',
-          600: '#57534E',
-          700: '#44403C',
-          800: '#292524',
-          900: '#1C1917',
+          50: '#FAFAF9',
+          100: '#F5F5F3',
+          200: '#E8E6E3',
+          300: '#D6D3CF',
+          400: '#A8A29C',
+          500: '#79726B',
+          600: '#5C564F',
+          700: '#46423D',
+          800: '#2D2A26',
+          900: '#1D1B18',
         },
       },
       fontFamily: {
