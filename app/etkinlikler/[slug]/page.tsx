@@ -66,7 +66,7 @@ export default function EventDetailPage() {
           provider:providers(id, name, phone, email, is_verified)
         `)
         .eq('slug', slug)
-        .eq('status', 'active')
+        .eq('is_active', true)
         .single()
 
       if (error) {
@@ -87,7 +87,7 @@ export default function EventDetailPage() {
             `)
             .eq('category_id', data.category_id)
             .eq('city_id', data.city_id)
-            .eq('status', 'active')
+            .eq('is_active', true)
             .neq('id', data.id)
             .limit(3)
 
