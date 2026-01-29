@@ -4,18 +4,21 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Search, Filter, X, Calendar, Clock, ChevronDown, Home, Map, Heart, User } from 'lucide-react'
+import { MapPin, Search, Filter, X, Calendar, Clock, Home, Map, Heart, User } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
-// Tip tanımları (gerçek projede @/types'dan import edilir)
+// Types
 interface Event {
   id: string
   title: string
   slug: string
   description?: string
-  category?: { id: string; name: string; slug: string; icon: string }
-  city?: { id: string; name: string; slug: string }
-  district?: { id: string; name: string; slug: string }
+  category_id: string
+  city_id: string
+  district_id: string
   address?: string
+  lat?: number
+  lng?: number
   min_age: number
   max_age: number
   price: number
@@ -25,50 +28,50 @@ interface Event {
   start_time: string
   end_time: string
   is_featured: boolean
-  image_url?: string
+  category?: { id: string; name: string; slug: string; icon: string }
+  city?: { id: string; name: string; slug: string }
+  district?: { id: string; name: string; slug: string }
 }
 
-// Mock data (Supabase bağlanınca kaldırılacak)
-const mockEvents: Event[] = [
-  { id: 'evt-1', title: 'Seramik Atölyesi', slug: 'seramik-atolyesi', category: { id: 'cat-atolye', name: 'Atölye', slug: 'atolye', icon: '🎨' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-kadikoy', name: 'Kadıköy', slug: 'kadikoy' }, min_age: 3, max_age: 6, price: 250, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '12:00', is_featured: true },
-  { id: 'evt-2', title: 'Resim ve Boya Atölyesi', slug: 'resim-boya-atolyesi', category: { id: 'cat-atolye', name: 'Atölye', slug: 'atolye', icon: '🎨' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-besiktas', name: 'Beşiktaş', slug: 'besiktas' }, min_age: 4, max_age: 6, price: 200, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '14:00', end_time: '16:00', is_featured: true },
-  { id: 'evt-4', title: 'Kırmızı Başlıklı Kız', slug: 'kirmizi-baslikli-kiz', category: { id: 'cat-tiyatro', name: 'Tiyatro', slug: 'tiyatro', icon: '🎭' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-kadikoy', name: 'Kadıköy', slug: 'kadikoy' }, min_age: 3, max_age: 6, price: 0, is_free: true, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '15:00', end_time: '16:30', is_featured: true },
-  { id: 'evt-6', title: 'Mini Ritim Atölyesi', slug: 'mini-ritim-atolyesi', category: { id: 'cat-muzik', name: 'Müzik', slug: 'muzik', icon: '🎵' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-besiktas', name: 'Beşiktaş', slug: 'besiktas' }, min_age: 3, max_age: 6, price: 180, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '11:30', is_featured: false },
-  { id: 'evt-8', title: 'Mini Futbol Okulu', slug: 'mini-futbol-okulu', category: { id: 'cat-spor', name: 'Spor', slug: 'spor', icon: '⚽' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-atasehir', name: 'Ataşehir', slug: 'atasehir' }, min_age: 4, max_age: 6, price: 150, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '11:30', is_featured: true },
-  { id: 'evt-11', title: 'Müzede Keşif Turu', slug: 'muzede-kesif-turu', category: { id: 'cat-muze', name: 'Müze', slug: 'muze', icon: '🏛️' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-kadikoy', name: 'Kadıköy', slug: 'kadikoy' }, min_age: 3, max_age: 6, price: 100, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '12:00', is_featured: false },
-  { id: 'evt-12', title: 'Bilim Merkezi Atölyesi', slug: 'bilim-merkezi-atolyesi', category: { id: 'cat-muze', name: 'Müze', slug: 'muze', icon: '🏛️' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-sariyer', name: 'Sarıyer', slug: 'sariyer' }, min_age: 4, max_age: 6, price: 0, is_free: true, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '13:00', end_time: '15:00', is_featured: true },
-  { id: 'evt-14', title: 'Park Oyunları', slug: 'park-oyunlari', category: { id: 'cat-acik-hava', name: 'Açık Hava', slug: 'acik-hava', icon: '🌳' }, city: { id: 'city-istanbul', name: 'İstanbul', slug: 'istanbul' }, district: { id: 'dist-kadikoy', name: 'Kadıköy', slug: 'kadikoy' }, min_age: 3, max_age: 6, price: 0, is_free: true, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '15:00', end_time: '17:00', is_featured: false },
-  { id: 'evt-16', title: 'Ahşap Boyama Atölyesi', slug: 'ahsap-boyama-atolyesi', category: { id: 'cat-atolye', name: 'Atölye', slug: 'atolye', icon: '🎨' }, city: { id: 'city-ankara', name: 'Ankara', slug: 'ankara' }, district: { id: 'dist-cankaya', name: 'Çankaya', slug: 'cankaya' }, min_age: 3, max_age: 6, price: 180, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '14:00', end_time: '16:00', is_featured: true },
-  { id: 'evt-18', title: 'Üç Küçük Domuz', slug: 'uc-kucuk-domuz', category: { id: 'cat-tiyatro', name: 'Tiyatro', slug: 'tiyatro', icon: '🎭' }, city: { id: 'city-ankara', name: 'Ankara', slug: 'ankara' }, district: { id: 'dist-cankaya', name: 'Çankaya', slug: 'cankaya' }, min_age: 3, max_age: 6, price: 0, is_free: true, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '11:00', end_time: '12:30', is_featured: true },
-  { id: 'evt-20', title: 'Mini Basketbol', slug: 'mini-basketbol', category: { id: 'cat-spor', name: 'Spor', slug: 'spor', icon: '⚽' }, city: { id: 'city-ankara', name: 'Ankara', slug: 'ankara' }, district: { id: 'dist-yenimahalle', name: 'Yenimahalle', slug: 'yenimahalle' }, min_age: 4, max_age: 6, price: 140, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '11:30', is_featured: false },
-  { id: 'evt-25', title: 'Atatürk Orman Çiftliği', slug: 'ataturk-orman-ciftligi', category: { id: 'cat-acik-hava', name: 'Açık Hava', slug: 'acik-hava', icon: '🌳' }, city: { id: 'city-ankara', name: 'Ankara', slug: 'ankara' }, district: { id: 'dist-yenimahalle', name: 'Yenimahalle', slug: 'yenimahalle' }, min_age: 2, max_age: 6, price: 50, is_free: false, start_date: '2025-02-01', end_date: '2025-02-28', start_time: '10:00', end_time: '15:00', is_featured: true },
+interface Category {
+  id: string
+  name: string
+  slug: string
+  icon: string
+}
+
+interface City {
+  id: string
+  name: string
+  slug: string
+}
+
+const categories: Category[] = [
+  { id: '1', slug: 'atolye', name: 'Atölye', icon: '🎨' },
+  { id: '2', slug: 'tiyatro', name: 'Tiyatro', icon: '🎭' },
+  { id: '3', slug: 'muzik', name: 'Müzik', icon: '🎵' },
+  { id: '4', slug: 'spor', name: 'Spor', icon: '⚽' },
+  { id: '5', slug: 'muze', name: 'Müze', icon: '🏛️' },
+  { id: '6', slug: 'acik-hava', name: 'Açık Hava', icon: '🌳' },
 ]
 
-const categories = [
-  { slug: 'atolye', name: 'Atölye', icon: '🎨' },
-  { slug: 'tiyatro', name: 'Tiyatro', icon: '🎭' },
-  { slug: 'muzik', name: 'Müzik', icon: '🎵' },
-  { slug: 'spor', name: 'Spor', icon: '⚽' },
-  { slug: 'muze', name: 'Müze', icon: '🏛️' },
-  { slug: 'acik-hava', name: 'Açık Hava', icon: '🌳' },
-]
-
-const cities = [
-  { slug: 'istanbul', name: 'İstanbul' },
-  { slug: 'ankara', name: 'Ankara' },
-  { slug: 'izmir', name: 'İzmir' },
-  { slug: 'bursa', name: 'Bursa' },
+const cities: City[] = [
+  { id: '1', slug: 'istanbul', name: 'İstanbul' },
+  { id: '2', slug: 'ankara', name: 'Ankara' },
+  { id: '3', slug: 'izmir', name: 'İzmir' },
+  { id: '4', slug: 'bursa', name: 'Bursa' },
 ]
 
 export default function EtkinliklerPage() {
-  const [events, setEvents] = useState<Event[]>(mockEvents)
+  const [events, setEvents] = useState<Event[]>([])
+  const [loading, setLoading] = useState(true)
   const [filterOpen, setFilterOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   
   // Filtreler
   const [selectedCity, setSelectedCity] = useState<string>('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [selectedDate, setSelectedDate] = useState<string>('')
+  const [selectedDate, setSelectedDate] = useState<string>('') // 'today' | 'weekend' | 'week' | ''
   const [isFreeOnly, setIsFreeOnly] = useState(false)
 
   // Scroll lock
@@ -81,17 +84,96 @@ export default function EtkinliklerPage() {
     return () => { document.body.style.overflow = '' }
   }, [filterOpen])
 
-  // Filtreleme
+  // Supabase'den etkinlikleri çek
+  useEffect(() => {
+    async function fetchEvents() {
+      setLoading(true)
+      
+      let query = supabase
+        .from('events')
+        .select(`
+          *,
+          category:categories(id, name, slug, icon),
+          city:cities(id, name, slug),
+          district:districts(id, name, slug)
+        `)
+        .eq('is_active', true)
+        .order('is_featured', { ascending: false })
+        .order('start_date', { ascending: true })
+
+      const { data, error } = await query
+
+      if (error) {
+        console.error('Error fetching events:', error)
+        setEvents([])
+      } else {
+        setEvents(data || [])
+      }
+      
+      setLoading(false)
+    }
+
+    fetchEvents()
+  }, [])
+
+  // Client-side filtreleme
   const filteredEvents = events.filter(event => {
+    // Şehir filtresi
     if (selectedCity && event.city?.slug !== selectedCity) return false
+    
+    // Kategori filtresi
     if (selectedCategory && event.category?.slug !== selectedCategory) return false
+    
+    // Ücretsiz filtresi
     if (isFreeOnly && !event.is_free) return false
+    
+    // Arama filtresi
     if (searchQuery && !event.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
+    
+    // Tarih filtresi
+    if (selectedDate) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      
+      const eventStart = new Date(event.start_date)
+      const eventEnd = new Date(event.end_date)
+      
+      if (selectedDate === 'today') {
+        // Bugün: etkinlik bugün aktif mi?
+        const todayStr = today.toISOString().split('T')[0]
+        if (event.start_date > todayStr || event.end_date < todayStr) return false
+      } else if (selectedDate === 'weekend') {
+        // Hafta sonu: Cumartesi veya Pazar
+        const dayOfWeek = today.getDay()
+        const saturday = new Date(today)
+        saturday.setDate(today.getDate() + (6 - dayOfWeek))
+        const sunday = new Date(saturday)
+        sunday.setDate(saturday.getDate() + 1)
+        
+        const saturdayStr = saturday.toISOString().split('T')[0]
+        const sundayStr = sunday.toISOString().split('T')[0]
+        
+        // Etkinlik hafta sonunu kapsıyor mu?
+        const coversWeekend = (event.start_date <= sundayStr && event.end_date >= saturdayStr)
+        if (!coversWeekend) return false
+      } else if (selectedDate === 'week') {
+        // Bu hafta: bugünden 7 gün içinde
+        const weekLater = new Date(today)
+        weekLater.setDate(today.getDate() + 7)
+        const weekLaterStr = weekLater.toISOString().split('T')[0]
+        const todayStr = today.toISOString().split('T')[0]
+        
+        // Etkinlik bu haftayı kapsıyor mu?
+        const coversWeek = (event.start_date <= weekLaterStr && event.end_date >= todayStr)
+        if (!coversWeek) return false
+      }
+    }
+    
     return true
   })
 
-  // Aktif filtre sayısı (date henüz implement edilmedi, sayma)
-  const activeFilterCount = [selectedCity, selectedCategory, isFreeOnly].filter(Boolean).length
+  // Aktif filtre sayısı
+  const activeFilterCount = [selectedCity, selectedCategory, selectedDate, isFreeOnly].filter(Boolean).length
 
   // Filtreleri temizle
   const clearFilters = () => {
@@ -132,13 +214,15 @@ export default function EtkinliklerPage() {
         </div>
       </header>
 
-      {/* Page Title + Search (Desktop) */}
+      {/* Page Title + Search */}
       <div className="bg-white border-b border-warm-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-xl md:text-2xl font-bold text-warm-900">Etkinlikler</h1>
-              <p className="text-sm text-warm-500 mt-0.5">{filteredEvents.length} etkinlik bulundu</p>
+              <p className="text-sm text-warm-500 mt-0.5">
+                {loading ? 'Yükleniyor...' : `${filteredEvents.length} etkinlik bulundu`}
+              </p>
             </div>
 
             {/* Desktop Search & Filter */}
@@ -175,6 +259,17 @@ export default function EtkinliklerPage() {
                 {categories.map(cat => (
                   <option key={cat.slug} value={cat.slug}>{cat.icon} {cat.name}</option>
                 ))}
+              </select>
+
+              <select
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="h-11 px-4 rounded-xl bg-warm-50 border border-warm-200 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200"
+              >
+                <option value="">Tüm Tarihler</option>
+                <option value="today">Bugün</option>
+                <option value="weekend">Hafta Sonu</option>
+                <option value="week">Bu Hafta</option>
               </select>
 
               <button
@@ -271,21 +366,26 @@ export default function EtkinliklerPage() {
                 </select>
               </div>
 
-              {/* Tarih */}
+              {/* Tarih - Preset buttons */}
               <div>
                 <label className="text-sm font-medium text-warm-600 mb-2 block">📅 Ne Zaman</label>
                 <div className="flex flex-wrap gap-2">
-                  {['', 'today', 'tomorrow', 'weekend'].map(date => (
+                  {[
+                    { value: '', label: 'Hepsi' },
+                    { value: 'today', label: 'Bugün' },
+                    { value: 'weekend', label: 'Hafta Sonu' },
+                    { value: 'week', label: 'Bu Hafta' },
+                  ].map(date => (
                     <button
-                      key={date}
-                      onClick={() => setSelectedDate(date)}
+                      key={date.value}
+                      onClick={() => setSelectedDate(date.value)}
                       className={`px-4 h-10 rounded-full font-medium text-sm transition-all ${
-                        selectedDate === date
+                        selectedDate === date.value
                           ? 'bg-primary-500 text-white'
                           : 'bg-warm-100 text-warm-600'
                       }`}
                     >
-                      {date === '' ? 'Hepsi' : date === 'today' ? 'Bugün' : date === 'tomorrow' ? 'Yarın' : 'Hafta Sonu'}
+                      {date.label}
                     </button>
                   ))}
                 </div>
@@ -336,7 +436,19 @@ export default function EtkinliklerPage() {
 
       {/* Event List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        {filteredEvents.length === 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-xl border border-warm-100 overflow-hidden animate-pulse">
+                <div className="aspect-[16/10] bg-warm-100" />
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-warm-100 rounded w-3/4" />
+                  <div className="h-3 bg-warm-100 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredEvents.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">🔍</div>
             <h3 className="text-lg font-semibold text-warm-800 mb-2">Etkinlik bulunamadı</h3>
@@ -357,7 +469,7 @@ export default function EtkinliklerPage() {
         )}
       </div>
 
-      {/* Bottom Navigation (Mobile) - Dinamik active state */}
+      {/* Bottom Navigation */}
       <BottomNav />
     </div>
   )
@@ -370,22 +482,18 @@ function EventCard({ event }: { event: Event }) {
       href={`/etkinlikler/${event.slug}`}
       className="bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden md:hover:shadow-soft-lg md:hover:-translate-y-1 transition-all group"
     >
-      {/* Image Placeholder - Title overlay eklendi */}
+      {/* Image Area */}
       <div className="aspect-[16/10] bg-gradient-to-b from-primary-50 via-primary-100 to-primary-200/50 flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Soft pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)"/%3E%3C/svg%3E")' }} />
         
-        {/* Emoji */}
-        <span className="text-5xl mb-2 group-hover:scale-110 transition-transform duration-300">{event.category?.icon || '🎉'}</span>
-        
-        {/* Category name */}
+        <span className="text-5xl mb-2 group-hover:scale-110 transition-transform duration-300">
+          {event.category?.icon || '🎉'}
+        </span>
         <span className="text-sm font-medium text-primary-700/70">{event.category?.name}</span>
         
-        {/* Bottom gradient overlay with title */}
+        {/* Title overlay */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/90 to-transparent pt-8 pb-3 px-4">
-          <h3 className="font-semibold text-warm-800 text-center truncate">
-            {event.title}
-          </h3>
+          <h3 className="font-semibold text-warm-800 text-center truncate">{event.title}</h3>
         </div>
         
         {/* Badges */}
@@ -405,19 +513,16 @@ function EventCard({ event }: { event: Event }) {
 
       {/* Content */}
       <div className="p-4">
-        {/* Location */}
         <div className="flex items-center gap-1.5 text-sm text-warm-500 mb-2">
           <MapPin className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
           <span className="truncate">{event.district?.name}, {event.city?.name}</span>
         </div>
 
-        {/* Age */}
         <div className="flex items-center gap-1.5 text-sm text-warm-500 mb-3">
           <span>👶</span>
           <span>{event.min_age}-{event.max_age} yaş</span>
         </div>
 
-        {/* Price & Time */}
         <div className="flex items-center justify-between pt-3 border-t border-warm-100">
           <div className="flex items-center gap-1.5 text-sm text-warm-500">
             <Clock className="w-4 h-4" strokeWidth={2} />
@@ -432,7 +537,7 @@ function EventCard({ event }: { event: Event }) {
   )
 }
 
-// Bottom Nav - Dinamik active state
+// Bottom Nav
 function BottomNav() {
   const pathname = usePathname()
   
@@ -448,7 +553,6 @@ function BottomNav() {
   )
 }
 
-// Bottom Nav Item - Aktif animasyon
 function BottomNavItem({ href, icon, label, active = false }: { href: string; icon: React.ReactNode; label: string; active?: boolean }) {
   return (
     <Link
@@ -459,7 +563,6 @@ function BottomNavItem({ href, icon, label, active = false }: { href: string; ic
     >
       <div className="relative">
         {icon}
-        {/* Aktif dot */}
         {active && (
           <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary-500 rounded-full" />
         )}
