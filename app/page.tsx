@@ -26,9 +26,9 @@ const featuredEvents = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-warm-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-warm-100 sticky top-0 z-50">
+    <div className="min-h-screen bg-white">
+      {/* Header - Beyaz zemin */}
+      <header className="bg-white border-b border-warm-100 sticky top-0 z-50">
         <div className="container-wide">
           <div className="flex justify-between items-center h-18">
             <Link href="/" className="flex items-center gap-3 group">
@@ -48,8 +48,8 @@ export default function HomePage() {
               <Link href="/harita" className="text-warm-600 hover:text-primary-600 font-medium transition-colors">
                 Harita
               </Link>
-              {/* CTA: "Etkinlik Bul" - MVP için uygun */}
-              <Link href="/etkinlikler" className="btn-primary text-sm py-2.5 px-5">
+              {/* Tek güçlü CTA */}
+              <Link href="/etkinlikler" className="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm py-2.5 px-5 rounded-xl transition-all">
                 Etkinlik Bul
               </Link>
             </nav>
@@ -57,37 +57,39 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero - Gradient: Daha teal ağırlıklı (lavender azaltıldı) */}
-      <section className="relative bg-gradient-to-br from-primary-100 via-primary-200 to-primary-400 text-warm-900 overflow-hidden">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-white/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-300/20 rounded-full blur-3xl"></div>
-        
+      {/* Hero - ÇOK HAFİF gradient (saturation %50 düştü) */}
+      <section 
+        className="relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #EAF9F6 0%, #F2FBF9 50%, #FFFFFF 100%)'
+        }}
+      >
         <div className="container-wide py-16 md:py-24 lg:py-28 relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-                {/* İkon stroke kalınlaştırıldı */}
-                <Sparkles className="w-4 h-4 text-accent-500" strokeWidth={2.5} />
-                <span className="text-sm font-medium text-warm-700">0-6 yaş için özel</span>
+              <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-full px-4 py-2 mb-6">
+                <Sparkles className="w-4 h-4 text-primary-500" strokeWidth={2.5} />
+                <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
               </div>
               
+              {/* Başlık: font-bold (700) */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-warm-900">
                 Küçük Kaşifler,
                 <span className="block text-primary-600">Büyük Keşifler!</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-warm-700 mb-10 leading-relaxed font-normal">
+              {/* Body: font-normal (400) */}
+              <p className="text-lg md:text-xl text-warm-600 mb-10 leading-relaxed">
                 Bugün çocuğunla ne yapacağını biz bulduk. 
                 Atölye, tiyatro, müze ve daha fazlası tek bir yerde.
               </p>
               
-              {/* Search Box */}
-              <div className="bg-white rounded-3xl p-3 shadow-soft-lg">
+              {/* Search Box - Beyaz zemin, hafif gölge */}
+              <div className="bg-white rounded-2xl p-3 shadow-soft border border-warm-100">
                 <div className="flex flex-col sm:flex-row gap-3">
                   <div className="flex-1 relative">
-                    {/* İkon stroke kalınlaştırıldı */}
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400 w-5 h-5" strokeWidth={2.5} />
-                    <select className="w-full pl-12 pr-4 py-4 rounded-2xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 appearance-none cursor-pointer transition-all">
+                    <select className="w-full pl-12 pr-4 py-4 rounded-xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 appearance-none cursor-pointer transition-all">
                       <option value="">Şehir Seçin</option>
                       {cities.map(city => (
                         <option key={city.name} value={city.slug}>{city.name}</option>
@@ -95,24 +97,23 @@ export default function HomePage() {
                     </select>
                   </div>
                   <div className="flex-1 relative">
-                    {/* İkon stroke kalınlaştırıldı */}
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400 w-5 h-5" strokeWidth={2.5} />
                     <input 
                       type="text" 
                       placeholder="Atölye, tiyatro, müze..."
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 placeholder:text-warm-400 transition-all"
+                      className="w-full pl-12 pr-4 py-4 rounded-xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 placeholder:text-warm-400 transition-all"
                     />
                   </div>
-                  <button className="btn-primary whitespace-nowrap">
-                    <span>Etkinlik Bul</span>
+                  {/* TEK GÜÇLÜ CTA - koyu yeşil */}
+                  <button className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-xl transition-all whitespace-nowrap shadow-sm hover:shadow-md">
+                    Etkinlik Bul
                   </button>
                 </div>
               </div>
 
-              {/* İkili CTA */}
+              {/* Secondary CTA - outline, sakin */}
               <div className="flex flex-wrap gap-4 mt-6">
-                <Link href="/harita" className="inline-flex items-center gap-2 text-primary-700 font-medium hover:text-primary-800 transition-colors">
-                  {/* İkon stroke kalınlaştırıldı */}
+                <Link href="/harita" className="inline-flex items-center gap-2 text-primary-600 font-medium hover:text-primary-700 transition-colors">
                   <Map className="w-5 h-5" strokeWidth={2.5} />
                   Haritada Keşfet
                 </Link>
@@ -126,7 +127,7 @@ export default function HomePage() {
                   <Link
                     href="/etkinlikler"
                     key={index}
-                    className={`block bg-white rounded-3xl p-5 shadow-soft transform ${
+                    className={`block bg-white rounded-2xl p-5 shadow-soft border border-warm-100 transform ${
                       index === 0 ? 'translate-x-6 rotate-1' : 
                       index === 1 ? '-translate-x-2 -rotate-1' : 
                       'translate-x-10 rotate-1'
@@ -141,19 +142,19 @@ export default function HomePage() {
                           <h3 className="font-semibold text-warm-800 group-hover:text-primary-600 transition-colors truncate">
                             {event.title}
                           </h3>
+                          {/* Badge: sadece "Bugün" mercan */}
                           {event.tag && (
                             <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                               event.tag === 'Bugün' 
                                 ? 'bg-accent-100 text-accent-700' 
-                                : 'bg-primary-100 text-primary-700'
+                                : 'bg-primary-50 text-primary-600'
                             }`}>
                               {event.tag}
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-3 text-sm text-warm-500 font-normal">
+                        <div className="flex items-center gap-3 text-sm text-warm-500">
                           <span className="flex items-center gap-1">
-                            {/* İkon stroke kalınlaştırıldı */}
                             <MapPin className="w-3.5 h-3.5" strokeWidth={2.5} />
                             {event.location}
                           </span>
@@ -176,17 +177,10 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        
-        {/* Wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-16 md:h-20">
-            <path d="M0 80H1440V0C1440 0 1140 60 720 60C300 60 0 0 0 0V80Z" fill="#FAFAF9"/>
-          </svg>
-        </div>
       </section>
 
-      {/* Nasıl Çalışır */}
-      <section className="section-tight bg-warm-50 border-b border-warm-100">
+      {/* Nasıl Çalışır - Beyaz zemin */}
+      <section className="section-tight bg-white border-b border-warm-100">
         <div className="container-wide">
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
             <Step number="1" color="primary" text="Şehrini seç" />
@@ -198,14 +192,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Kategoriler */}
+      {/* Kategoriler - Çok açık gri zemin */}
       <section className="section bg-warm-50">
         <div className="container-wide">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-warm-900 mb-4">
               Kategoriler
             </h2>
-            <p className="text-warm-500 text-lg max-w-md mx-auto font-normal">
+            <p className="text-warm-500 text-lg max-w-md mx-auto">
               İlgi alanına göre etkinlikleri keşfet
             </p>
           </div>
@@ -215,7 +209,7 @@ export default function HomePage() {
               <Link 
                 key={cat.slug}
                 href={`/etkinlikler?kategori=${cat.slug}`}
-                className="card card-hover p-6 text-center group"
+                className="bg-white rounded-2xl p-6 text-center border border-warm-100 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 hover:border-primary-100 transition-all group"
               >
                 <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {cat.icon}
@@ -229,14 +223,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Şehirler - Sayılar yerine güvenli metin */}
+      {/* Şehirler - Beyaz zemin */}
       <section className="section bg-white">
         <div className="container-wide">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-warm-900 mb-4">
               Şehirler
             </h2>
-            <p className="text-warm-500 text-lg max-w-md mx-auto font-normal">
+            <p className="text-warm-500 text-lg max-w-md mx-auto">
               Yakınındaki etkinlikleri bul
             </p>
           </div>
@@ -246,17 +240,15 @@ export default function HomePage() {
               <Link 
                 key={city.name}
                 href={`/etkinlikler?sehir=${city.slug}`}
-                className="card card-hover p-8 text-center group"
+                className="bg-white rounded-2xl p-8 text-center border border-warm-100 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 hover:border-primary-100 transition-all group"
               >
-                <div className="w-18 h-18 bg-gradient-to-br from-primary-100 to-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
-                  {/* İkon stroke kalınlaştırıldı */}
+                <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
                   <MapPin className="w-8 h-8 text-primary-500" strokeWidth={2.5} />
                 </div>
                 <h3 className="font-bold text-xl text-warm-800 mb-2 group-hover:text-primary-600 transition-colors">
                   {city.name}
                 </h3>
-                {/* Sayı yerine güvenli metin - MVP için uygun */}
-                <p className="text-warm-500 font-normal text-sm">
+                <p className="text-warm-500 text-sm">
                   Popüler etkinlikler
                 </p>
               </Link>
@@ -265,7 +257,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Değer Önerileri */}
+      {/* Değer Önerileri - Çok açık gri zemin */}
       <section className="section bg-warm-50">
         <div className="container-wide">
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
@@ -291,15 +283,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA - Güvenli sosyal kanıt */}
-      <section className="py-24 bg-gradient-to-br from-primary-500 via-primary-400 to-primary-600 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent-400/20 rounded-full blur-3xl"></div>
+      {/* CTA - Sakin teal gradient */}
+      <section 
+        className="py-24 text-white relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #249C88 0%, #2FB7A0 50%, #249C88 100%)'
+        }}
+      >
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
         
         <div className="container-wide relative">
           <div className="max-w-2xl mx-auto text-center">
-            {/* Güvenli sosyal kanıt - sayı yok */}
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
               <Sparkles className="w-4 h-4" strokeWidth={2.5} />
               <span className="text-white/90 font-medium">
                 Her gün yeni etkinlikler ekleniyor
@@ -309,15 +305,17 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               Hemen Keşfetmeye Başla!
             </h2>
-            <p className="text-xl text-white/90 mb-10 leading-relaxed font-normal">
+            <p className="text-xl text-white/90 mb-10 leading-relaxed">
               Çocuğunla yapabileceğin en güzel aktiviteleri MiniMaply'de bul.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/harita" className="btn-white inline-flex items-center justify-center gap-3 text-lg">
+              {/* Primary CTA - Beyaz, güçlü */}
+              <Link href="/harita" className="bg-white text-primary-600 font-semibold py-4 px-8 rounded-xl shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-3 text-lg">
                 <Map className="w-5 h-5" strokeWidth={2.5} />
                 Haritada Keşfet
               </Link>
-              <Link href="/etkinlikler" className="inline-flex items-center justify-center gap-3 text-lg border-2 border-white/50 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-white/10 transition-colors">
+              {/* Secondary CTA - Outline, sakin */}
+              <Link href="/etkinlikler" className="border-2 border-white/30 text-white font-semibold py-4 px-8 rounded-xl hover:bg-white/10 transition-all inline-flex items-center justify-center gap-3 text-lg">
                 Listeyi Gör
                 <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
               </Link>
@@ -326,7 +324,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer - Koyu teal */}
+      {/* Footer - Koyu teal (sakin) */}
       <footer className="bg-primary-900 text-white py-16">
         <div className="container-wide">
           <div className="grid md:grid-cols-4 gap-10 mb-12">
@@ -340,13 +338,13 @@ export default function HomePage() {
                 />
                 <span className="font-bold text-xl">MiniMaply</span>
               </Link>
-              <p className="text-primary-200 leading-relaxed font-normal">
+              <p className="text-primary-200 leading-relaxed">
                 Küçük Kaşifler, Büyük Keşifler!
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-5 text-lg">Keşfet</h4>
-              <ul className="space-y-3 text-primary-200 font-normal">
+              <ul className="space-y-3 text-primary-200">
                 <li><Link href="/etkinlikler" className="hover:text-white transition-colors">Etkinlikler</Link></li>
                 <li><Link href="/harita" className="hover:text-white transition-colors">Harita</Link></li>
                 <li><Link href="/kategoriler" className="hover:text-white transition-colors">Kategoriler</Link></li>
@@ -354,21 +352,21 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="font-semibold mb-5 text-lg">Şirket</h4>
-              <ul className="space-y-3 text-primary-200 font-normal">
+              <ul className="space-y-3 text-primary-200">
                 <li><Link href="/hakkimizda" className="hover:text-white transition-colors">Hakkımızda</Link></li>
                 <li><Link href="/iletisim" className="hover:text-white transition-colors">İletişim</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-5 text-lg">Yasal</h4>
-              <ul className="space-y-3 text-primary-200 font-normal">
+              <ul className="space-y-3 text-primary-200">
                 <li><Link href="/gizlilik" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
                 <li><Link href="/kullanim-kosullari" className="hover:text-white transition-colors">Kullanım Koşulları</Link></li>
                 <li><Link href="/kvkk" className="hover:text-white transition-colors">KVKK</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-primary-800 pt-8 text-center text-primary-300 font-normal">
+          <div className="border-t border-primary-800 pt-8 text-center text-primary-300">
             <p>© 2025 MiniMaply. Tüm hakları saklıdır.</p>
           </div>
         </div>
@@ -381,12 +379,12 @@ export default function HomePage() {
 
 function Step({ number, color, text }: { number: string, color: string, text: string }) {
   const colorClasses = {
-    primary: 'bg-primary-100 text-primary-600',
-    accent: 'bg-accent-100 text-accent-600',
+    primary: 'bg-primary-50 text-primary-600 border border-primary-100',
+    accent: 'bg-accent-50 text-accent-600 border border-accent-100',
   }
   return (
     <div className="flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-2xl ${colorClasses[color as keyof typeof colorClasses]} flex items-center justify-center font-semibold text-lg`}>
+      <div className={`w-12 h-12 rounded-xl ${colorClasses[color as keyof typeof colorClasses]} flex items-center justify-center font-semibold text-lg`}>
         {number}
       </div>
       <span className="text-warm-700 font-medium text-lg">{text}</span>
@@ -400,16 +398,16 @@ function Connector() {
 
 function ValueCard({ icon, color, title, description }: { icon: React.ReactNode, color: string, title: string, description: string }) {
   const colorClasses = {
-    primary: 'bg-primary-100 text-primary-600',
-    accent: 'bg-accent-100 text-accent-600',
+    primary: 'bg-primary-50 text-primary-600 border border-primary-100',
+    accent: 'bg-accent-50 text-accent-600 border border-accent-100',
   }
   return (
     <div className="text-center">
-      <div className={`w-18 h-18 ${colorClasses[color as keyof typeof colorClasses]} rounded-3xl flex items-center justify-center mx-auto mb-5`}>
+      <div className={`w-16 h-16 ${colorClasses[color as keyof typeof colorClasses]} rounded-2xl flex items-center justify-center mx-auto mb-5`}>
         {icon}
       </div>
       <h3 className="font-semibold text-xl text-warm-800 mb-3">{title}</h3>
-      <p className="text-warm-500 leading-relaxed font-normal">{description}</p>
+      <p className="text-warm-500 leading-relaxed">{description}</p>
     </div>
   )
 }

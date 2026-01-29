@@ -2,21 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NOT: Nunito artık next/font ile layout.tsx'te yükleniyor */
-/* @import kaldırıldı - FOIT/FOUT önlendi */
+/* Nunito artık next/font ile layout.tsx'te yükleniyor */
 
 @layer base {
   :root {
-    --primary-teal: 20 184 166;
+    --primary-teal: 47 183 160;
     --accent-coral: 251 146 60;
-    --accent-yellow: 250 204 21;
   }
 
   body {
-    @apply text-warm-700 antialiased bg-warm-50;
-    font-weight: 400;
+    @apply text-warm-700 antialiased bg-white;
   }
 
+  /* Font weights: başlık 700, body 400 */
   h1 {
     @apply font-bold tracking-tight leading-tight;
   }
@@ -31,26 +29,26 @@
 }
 
 @layer components {
-  /* TEAL CTA Butonları */
+  /* CTA Butonları - font-semibold (600) */
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-glow-teal hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-7 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply bg-accent-400 hover:bg-accent-500 text-white font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300;
+    @apply bg-accent-400 hover:bg-accent-500 text-white font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
   }
 
   .btn-outline {
-    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300;
+    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
   }
 
   .btn-white {
-    @apply bg-white text-primary-600 font-semibold py-4 px-8 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5;
+    @apply bg-white text-primary-600 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-soft hover:shadow-soft-lg;
   }
 
-  /* Kartlar */
+  /* Kartlar - Daha hafif gölge */
   .card {
-    @apply bg-white rounded-3xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-warm-100;
+    @apply bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-warm-100;
   }
 
   .card-hover {
@@ -59,24 +57,24 @@
 
   /* Input */
   .input {
-    @apply w-full px-5 py-4 border border-warm-200 rounded-2xl focus:ring-4 focus:ring-primary-100 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400 font-normal;
+    @apply w-full px-5 py-4 border border-warm-200 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400;
   }
 
-  /* Badge'ler */
+  /* Badge'ler - Sakin tonlar */
   .badge {
     @apply inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium;
   }
 
   .badge-today {
-    @apply bg-accent-100 text-accent-700 border border-accent-200;
+    @apply bg-accent-100 text-accent-700;
   }
 
   .badge-tomorrow {
-    @apply bg-primary-100 text-primary-700 border border-primary-200;
+    @apply bg-primary-50 text-primary-600;
   }
 
   .badge-free {
-    @apply bg-primary-100 text-primary-700 border border-primary-200;
+    @apply bg-primary-50 text-primary-600;
   }
 
   /* Section spacing */
