@@ -387,6 +387,11 @@ export default function EventDetailPage() {
                 <p className="text-2xl font-bold text-primary-700">
                   {event.is_free ? 'Ücretsiz' : `${event.price}₺`}
                 </p>
+                {event.source_type === 'sourced' && !event.is_free && (
+                  <p className="text-xs text-primary-500 mt-1">
+                    * Fiyat bilgisi değişmiş olabilir
+                  </p>
+                )}
               </div>
             </div>
           </div>

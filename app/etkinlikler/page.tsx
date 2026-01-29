@@ -484,7 +484,9 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/etkinlikler/${event.slug}`}
-      className="bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden md:hover:shadow-soft-lg md:hover:-translate-y-1 transition-all group"
+      className={`bg-white rounded-xl border border-warm-100 shadow-soft overflow-hidden md:hover:shadow-soft-lg md:hover:-translate-y-1 transition-all group ${
+        event.source_type === 'community' ? 'opacity-90' : ''
+      }`}
     >
       {/* Image Area */}
       <div className="aspect-[16/10] bg-gradient-to-b from-primary-50 via-primary-100 to-primary-200/50 flex flex-col items-center justify-center relative overflow-hidden">
@@ -514,8 +516,8 @@ function EventCard({ event }: { event: Event }) {
             </span>
           )}
           {event.source_type === 'community' && (
-            <span className="bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
-              💡 İpucu
+            <span className="bg-amber-100 text-amber-700 border border-amber-200 text-xs font-semibold px-2 py-0.5 rounded-full">
+              ⏳ Henüz doğrulanmadı
             </span>
           )}
           {event.is_featured && (
