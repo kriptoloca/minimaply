@@ -63,16 +63,16 @@ export default function HomePage() {
               <Menu className="w-6 h-6" strokeWidth={2.5} />
             </button>
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 md:gap-3 group">
+            {/* Logo - Web'de daha büyük */}
+            <Link href="/" className="flex items-center gap-2.5 md:gap-4 group">
               <Image 
                 src="/logo-icon.png" 
                 alt="MiniMaply" 
-                width={36}
-                height={36}
-                className="w-9 h-9 md:w-10 md:h-10 group-hover:scale-110 transition-transform"
+                width={48}
+                height={48}
+                className="w-9 h-9 md:w-12 md:h-12 group-hover:scale-105 transition-transform"
               />
-              <span className="font-bold text-xl md:text-2xl text-primary-700">MiniMaply</span>
+              <span className="font-bold text-xl md:text-[28px] text-primary-700">MiniMaply</span>
             </Link>
 
             {/* Search button - 44px min tap */}
