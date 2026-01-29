@@ -27,9 +27,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  const category = Array.isArray(event.category) ? event.category[0] : event.category
+  const city = Array.isArray(event.city) ? event.city[0] : event.city
+  const district = Array.isArray(event.district) ? event.district[0] : event.district
+
   const title = `${event.title} | MiniMaply`
   const description = event.description 
-    || `${event.category?.icon} ${event.category?.name} etkinliği - ${event.district?.name}, ${event.city?.name}. ${event.min_age}-${event.max_age} yaş için. ${event.is_free ? 'Ücretsiz' : `${event.price}₺`}`
+    || `${category?.icon || '🎉'} ${category?.name || 'Etkinlik'} - ${district?.name || ''}, ${city?.name || ''}. ${event.min_age}-${event.max_age} yaş için. ${event.is_free ? 'Ücretsiz' : `${event.price}₺`}`
 
   return {
     title,
