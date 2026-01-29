@@ -63,14 +63,14 @@ export default function HomePage() {
               <Menu className="w-6 h-6" strokeWidth={2.5} />
             </button>
 
-            {/* Logo - Web'de daha büyük */}
-            <Link href="/" className="flex items-center gap-2.5 md:gap-4 group">
+            {/* Logo - Oran korunuyor */}
+            <Link href="/" className="flex items-center gap-3 md:gap-4 group">
               <Image 
                 src="/logo-icon.png" 
                 alt="MiniMaply" 
-                width={48}
-                height={48}
-                className="w-9 h-9 md:w-12 md:h-12 group-hover:scale-105 transition-transform"
+                width={120}
+                height={120}
+                className="w-auto h-10 md:h-14 object-contain group-hover:scale-105 transition-transform"
               />
               <span className="font-bold text-xl md:text-[28px] text-primary-700">MiniMaply</span>
             </Link>
@@ -108,7 +108,7 @@ export default function HomePage() {
           <div className="absolute left-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-xl">
             <div className="p-4 border-b border-warm-100 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-2.5" onClick={() => setMenuOpen(false)}>
-                <Image src="/logo-icon.png" alt="MiniMaply" width={32} height={32} />
+                <Image src="/logo-icon.png" alt="MiniMaply" width={80} height={80} className="w-auto h-9 object-contain" />
                 <span className="font-bold text-lg text-primary-700">MiniMaply</span>
               </Link>
               {/* 4️⃣ 44px TAP ALANI */}
@@ -487,7 +487,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
             <div className="col-span-2 md:col-span-1">
               <Link href="/" className="flex items-center gap-2.5 mb-3">
-                <Image src="/logo-icon.png" alt="MiniMaply" width={28} height={28} />
+                <Image src="/logo-icon.png" alt="MiniMaply" width={80} height={80} className="w-auto h-8 object-contain" />
                 <span className="font-bold text-lg">MiniMaply</span>
               </Link>
               <p className="text-warm-400 text-sm leading-relaxed">
