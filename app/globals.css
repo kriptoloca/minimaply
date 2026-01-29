@@ -2,44 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Nunito - rounded, warm, child-friendly but not childish */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+/* NOT: Nunito artık next/font ile layout.tsx'te yükleniyor */
+/* @import kaldırıldı - FOIT/FOUT önlendi */
 
 @layer base {
   :root {
-    --primary: 139 92 246;
-    --secondary: 16 185 129;
-    --accent: 249 115 22;
+    --primary-teal: 20 184 166;
+    --accent-coral: 251 146 60;
+    --accent-yellow: 250 204 21;
   }
 
   body {
-    @apply font-sans text-warm-800 antialiased bg-warm-50;
+    @apply text-warm-700 antialiased bg-warm-50;
+    font-weight: 400;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight;
+  h1 {
+    @apply font-bold tracking-tight leading-tight;
+  }
+  
+  h2 {
+    @apply font-bold tracking-tight;
+  }
+  
+  h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
   }
 }
 
 @layer components {
-  /* Butonlar - daha yumuşak, daha rounded */
+  /* TEAL CTA Butonları */
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-bold py-3.5 px-7 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-glow-teal hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-secondary {
-    @apply bg-secondary-500 hover:bg-secondary-600 text-white font-bold py-3.5 px-7 rounded-2xl transition-all duration-300;
+    @apply bg-accent-400 hover:bg-accent-500 text-white font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300;
   }
 
   .btn-outline {
-    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-bold py-3.5 px-7 rounded-2xl transition-all duration-300;
+    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-semibold py-3.5 px-7 rounded-2xl transition-all duration-300;
   }
 
   .btn-white {
-    @apply bg-white text-primary-600 font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5;
+    @apply bg-white text-primary-600 font-semibold py-4 px-8 rounded-2xl transition-all duration-300 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5;
   }
 
-  /* Kartlar - daha fazla border-radius, daha subtle shadow */
+  /* Kartlar */
   .card {
     @apply bg-white rounded-3xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-warm-100;
   }
@@ -48,37 +57,29 @@
     @apply hover:-translate-y-1 hover:border-primary-100;
   }
 
-  /* Input - daha yumuşak */
+  /* Input */
   .input {
-    @apply w-full px-5 py-4 border border-warm-200 rounded-2xl focus:ring-4 focus:ring-primary-100 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400;
+    @apply w-full px-5 py-4 border border-warm-200 rounded-2xl focus:ring-4 focus:ring-primary-100 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400 font-normal;
   }
 
-  /* Badge'ler - pastel tonlar */
+  /* Badge'ler */
   .badge {
-    @apply inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-semibold;
-  }
-
-  .badge-category {
-    @apply bg-primary-50 text-primary-700 border border-primary-100;
-  }
-
-  .badge-free {
-    @apply bg-emerald-50 text-emerald-700 border border-emerald-100;
+    @apply inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium;
   }
 
   .badge-today {
-    @apply bg-emerald-50 text-emerald-700 border border-emerald-100;
+    @apply bg-accent-100 text-accent-700 border border-accent-200;
   }
 
   .badge-tomorrow {
-    @apply bg-sky-50 text-sky-700 border border-sky-100;
+    @apply bg-primary-100 text-primary-700 border border-primary-200;
   }
 
-  .badge-price {
-    @apply bg-primary-50 text-primary-700 border border-primary-100;
+  .badge-free {
+    @apply bg-primary-100 text-primary-700 border border-primary-200;
   }
 
-  /* Section spacing - daha fazla white space */
+  /* Section spacing */
   .section {
     @apply py-20 md:py-24;
   }
@@ -93,7 +94,7 @@
   }
 }
 
-/* Scrollbar - minimal */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -107,7 +108,6 @@
   @apply bg-warm-200 rounded-full hover:bg-warm-300;
 }
 
-/* Smooth experience */
 html {
   scroll-behavior: smooth;
 }
@@ -116,7 +116,6 @@ html {
   @apply bg-primary-100 text-primary-900;
 }
 
-/* Focus states - accessibility */
 *:focus-visible {
   @apply outline-none ring-2 ring-primary-400 ring-offset-2;
 }

@@ -9,44 +9,55 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // MiniMaply Brand Colors - Daha pastel, daha yumuşak
+        // Logo Teal - ANA RENK (CTA, linkler, aktif durumlar)
         primary: {
-          50: '#F5F3FF',
-          100: '#EDE9FE',
-          200: '#DDD6FE',
-          300: '#C4B5FD',
-          400: '#A78BFA',
-          500: '#8B5CF6', // Ana renk - biraz daha sıcak mor
-          600: '#7C3AED',
-          700: '#6D28D9',
-          800: '#5B21B6',
-          900: '#4C1D95',
+          50: '#F0FDFA',
+          100: '#CCFBF1',
+          200: '#99F6E4',
+          300: '#5EEAD4',
+          400: '#2DD4BF',
+          500: '#14B8A6', // Logo ana teal
+          600: '#0D9488',
+          700: '#0F766E',
+          800: '#115E59',
+          900: '#134E4A',
         },
-        secondary: {
-          50: '#ECFDF5',
-          100: '#D1FAE5',
-          200: '#A7F3D0',
-          300: '#6EE7B7',
-          400: '#34D399',
-          500: '#10B981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065F46',
-          900: '#064E3B',
-        },
+        // Logo Mercan/Turuncu - İKİNCİL VURGU (bugün, ücretsiz, kampanya)
         accent: {
           50: '#FFF7ED',
           100: '#FFEDD5',
           200: '#FED7AA',
           300: '#FDBA74',
-          400: '#FB923C',
+          400: '#FB923C', // Logo turuncu
           500: '#F97316',
           600: '#EA580C',
           700: '#C2410C',
           800: '#9A3412',
           900: '#7C2D12',
         },
-        // Daha sıcak gri tonları
+        // Logo Sarı - ÜÇÜNCÜL (highlight, star)
+        yellow: {
+          50: '#FEFCE8',
+          100: '#FEF9C3',
+          200: '#FEF08A',
+          300: '#FDE047',
+          400: '#FACC15', // Logo sarı
+          500: '#EAB308',
+          600: '#CA8A04',
+          700: '#A16207',
+          800: '#854D0E',
+          900: '#713F12',
+        },
+        // Soft Lavender - HERO GRADIENT için (mor yerine)
+        lavender: {
+          50: '#FAF5FF',
+          100: '#F3E8FF',
+          200: '#E9D5FF',
+          300: '#D8B4FE',
+          400: '#C084FC',
+          500: '#A855F7',
+        },
+        // Sıcak Nötr Tonlar
         warm: {
           50: '#FAFAF9',
           100: '#F5F5F4',
@@ -61,9 +72,14 @@ const config: Config = {
         },
       },
       fontFamily: {
-        // Nunito - daha rounded, daha sıcak
-        sans: ['Nunito', 'Inter', 'sans-serif'],
-        display: ['Nunito', 'sans-serif'],
+        sans: ['Nunito', 'system-ui', 'sans-serif'],
+        display: ['Nunito', 'system-ui', 'sans-serif'],
+      },
+      fontWeight: {
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
       },
       borderRadius: {
         '4xl': '2rem',
@@ -72,7 +88,7 @@ const config: Config = {
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'soft-lg': '0 10px 40px -10px rgba(0, 0, 0, 0.1)',
-        'glow': '0 0 20px rgba(139, 92, 246, 0.15)',
+        'glow-teal': '0 0 20px rgba(20, 184, 166, 0.2)',
       },
       spacing: {
         '18': '4.5rem',
