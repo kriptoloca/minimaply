@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Nunito artık next/font ile layout.tsx'te yükleniyor */
-
 @layer base {
   :root {
-    --primary-teal: 47 183 160;
-    --accent-coral: 251 146 60;
+    --primary: 47 183 160;
+    --coral: 249 115 22;
+    --surface: 247 250 249;
   }
 
   body {
-    @apply text-warm-700 antialiased bg-white;
+    @apply text-warm-700 antialiased;
+    background-color: #F7FAF9; /* surface */
   }
 
   h1 {
@@ -29,59 +29,43 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-7 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md;
-  }
-
-  .btn-secondary {
-    @apply bg-accent-400 hover:bg-accent-500 text-white font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md;
   }
 
   .btn-outline {
-    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
+    @apply border-2 border-primary-400 text-primary-600 hover:bg-primary-50 font-semibold rounded-xl transition-all duration-200;
   }
 
   .btn-white {
-    @apply bg-white text-primary-600 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-soft hover:shadow-soft-lg;
+    @apply bg-white text-primary-600 font-semibold rounded-xl transition-all duration-200 shadow-soft hover:shadow-soft-lg;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-warm-100;
+    @apply bg-white rounded-xl shadow-soft transition-all duration-200 border border-warm-100;
   }
 
   .card-hover {
-    @apply hover:-translate-y-1 hover:border-primary-100;
+    @apply hover:-translate-y-1 hover:border-primary-100 hover:shadow-soft-lg;
   }
 
   .input {
-    @apply w-full px-5 py-4 border border-warm-200 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400;
+    @apply w-full px-4 border border-warm-200 rounded-xl focus:ring-2 focus:ring-primary-200 focus:border-primary-400 outline-none transition-all bg-white placeholder:text-warm-400;
   }
 
   .badge {
-    @apply inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium;
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
   }
 
   .badge-today {
-    @apply bg-accent-100 text-accent-700;
-  }
-
-  .badge-tomorrow {
-    @apply bg-primary-50 text-primary-600;
+    @apply bg-coral-100 text-coral-700;
   }
 
   .badge-free {
     @apply bg-primary-50 text-primary-600;
   }
 
-  .section {
-    @apply py-20 md:py-24;
-  }
-
-  .section-tight {
-    @apply py-12 md:py-16;
-  }
-
   .container-wide {
-    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-10;
   }
 }
 
@@ -96,31 +80,21 @@
   display: none;
 }
 
-/* iOS safe area (bottom nav için) */
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0);
-}
+/* ==================== SCROLLBAR (Desktop) ==================== */
 
-/* Touch feedback */
-@media (hover: none) {
-  .active\:scale-\[0\.98\]:active {
-    transform: scale(0.98);
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-}
 
-/* ==================== SCROLLBAR ==================== */
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-warm-200 rounded-full hover:bg-warm-300;
+  ::-webkit-scrollbar-thumb {
+    @apply bg-warm-200 rounded-full hover:bg-warm-300;
+  }
 }
 
 html {
@@ -138,4 +112,11 @@ html {
 /* Mobil tap highlight kaldır */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS input zoom önle */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }
