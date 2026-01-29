@@ -51,8 +51,8 @@ export default function HomePage() {
       {/* ==================== HEADER ==================== */}
       <header className="bg-white border-b border-warm-100 sticky top-0 z-50">
         <div className="container-wide">
-          {/* 4️⃣ 44px TAP ALANI - Header yüksekliği */}
-          <div className="flex justify-between items-center h-14 md:h-20">
+          {/* 4️⃣ 44px TAP ALANI - Header yüksekliği artırıldı */}
+          <div className="flex justify-between items-center h-16 md:h-24">
             
             {/* Hamburger - 44px min tap */}
             <button 
@@ -63,16 +63,16 @@ export default function HomePage() {
               <Menu className="w-6 h-6" strokeWidth={2.5} />
             </button>
 
-            {/* Logo - Oran korunuyor */}
-            <Link href="/" className="flex items-center gap-3 md:gap-4 group">
+            {/* Logo - Büyük */}
+            <Link href="/" className="flex items-center gap-3 md:gap-5 group">
               <Image 
                 src="/logo-icon.png" 
                 alt="MiniMaply" 
-                width={120}
-                height={120}
-                className="w-auto h-10 md:h-14 object-contain group-hover:scale-105 transition-transform"
+                width={150}
+                height={150}
+                className="w-auto h-12 md:h-16 object-contain group-hover:scale-105 transition-transform"
               />
-              <span className="font-bold text-xl md:text-[28px] text-primary-700">MiniMaply</span>
+              <span className="font-bold text-2xl md:text-3xl text-primary-700">MiniMaply</span>
             </Link>
 
             {/* Search button - 44px min tap */}
