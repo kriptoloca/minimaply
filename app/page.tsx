@@ -243,14 +243,14 @@ export default function HomePage() {
                 <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
               </div>
               
-              <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight text-warm-900">
-                Şehrindeki
+              <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight">
+                <span className="text-warm-800">Şehrindeki</span>
                 <span className="block text-primary-600">Çocuk Etkinlikleri Haritası</span>
               </h1>
               
               <p className="text-lg text-warm-600 mb-8 leading-relaxed">
-                Bugün çocuğunla ne yapacağını biz bulduk. 
-                Atölye, tiyatro, müze ve daha fazlası tek bir yerde.
+                Bugün çocuğunla ne yapacağını düşünme. 
+                Şehrindeki en iyi etkinlikleri senin için topladık.
               </p>
               
               {/* Search Box */}
@@ -281,9 +281,9 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-wrap gap-4 mt-5">
-                <Link href="/harita" className="inline-flex items-center gap-2 text-primary-600 font-medium hover:text-primary-700 transition-colors">
+                <Link href="/harita" className="inline-flex items-center gap-2 bg-primary-50 hover:bg-primary-100 text-primary-700 font-semibold px-5 py-2.5 rounded-xl transition-all">
                   <Map className="w-5 h-5" strokeWidth={2.5} />
-                  Haritada Keşfet
+                  🗺️ Haritada Keşfet
                 </Link>
               </div>
             </div>
@@ -353,7 +353,7 @@ export default function HomePage() {
             <Connector />
             <Step number="2" color="coral" text="Etkinliği keşfet" />
             <Connector />
-            <Step number="3" color="primary" text="Hemen katıl" />
+            <Step number="3" color="primary" text="Detayları gör" />
           </div>
         </div>
       </section>
