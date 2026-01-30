@@ -238,9 +238,15 @@ export default function HomePage() {
         <div className="container-wide py-16 lg:py-20 relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 bg-white border border-primary-100 rounded-full px-4 py-2 mb-6">
-                <Sparkles className="w-4 h-4 text-primary-500" strokeWidth={2.5} />
-                <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <div className="inline-flex items-center gap-2 bg-white border border-primary-100 rounded-full px-4 py-2">
+                  <Sparkles className="w-4 h-4 text-primary-500" strokeWidth={2.5} />
+                  <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
+                </div>
+                <Link href="/harita" className="inline-flex items-center gap-2 bg-primary-50 hover:bg-primary-100 text-primary-700 font-semibold px-4 py-2 rounded-full transition-all">
+                  <Map className="w-4 h-4" strokeWidth={2.5} />
+                  🗺️ Haritada Keşfet
+                </Link>
               </div>
               
               <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight">
@@ -249,7 +255,6 @@ export default function HomePage() {
               </h1>
               
               <p className="text-lg text-warm-600 mb-8 leading-relaxed">
-                Bugün çocuğunla ne yapacağını düşünme. 
                 Şehrindeki en iyi etkinlikleri senin için topladık.
               </p>
               
@@ -267,24 +272,18 @@ export default function HomePage() {
                   </div>
                   <div className="flex-1 relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400 w-5 h-5" strokeWidth={2.5} />
-                    <input 
-                      type="text" 
-                      placeholder="Atölye, tiyatro, müze..."
-                      className="w-full pl-12 pr-4 h-12 rounded-xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 placeholder:text-warm-400 transition-all"
-                    />
+                    <select className="w-full pl-12 pr-4 h-12 rounded-xl bg-warm-50 text-warm-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-200 appearance-none cursor-pointer transition-all">
+                      <option value="">Kategori Seçin</option>
+                      {categories.map(cat => (
+                        <option key={cat.slug} value={cat.slug}>{cat.icon} {cat.name}</option>
+                      ))}
+                    </select>
                   </div>
                   {/* 4️⃣ 44px TAP ALANI */}
                   <button className="bg-primary-500 hover:bg-primary-600 text-white font-semibold h-12 px-6 rounded-xl transition-all whitespace-nowrap shadow-sm hover:shadow-md">
                     Etkinlik Bul
                   </button>
                 </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4 mt-5">
-                <Link href="/harita" className="inline-flex items-center gap-2 bg-primary-50 hover:bg-primary-100 text-primary-700 font-semibold px-5 py-2.5 rounded-xl transition-all">
-                  <Map className="w-5 h-5" strokeWidth={2.5} />
-                  🗺️ Haritada Keşfet
-                </Link>
               </div>
             </div>
 
@@ -351,9 +350,9 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
             <Step number="1" color="primary" text="Şehrini seç" />
             <Connector />
-            <Step number="2" color="coral" text="Etkinliği keşfet" />
+            <Step number="2" color="coral" text="Detayları gör" />
             <Connector />
-            <Step number="3" color="primary" text="Detayları gör" />
+            <Step number="3" color="primary" text="Etkinliği planla" />
           </div>
         </div>
       </section>
