@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: 'MiniMaply - Çocuk Etkinlikleri',
     template: '%s | MiniMaply'
   },
-  description: 'Türkiye\'nin en kapsamlı çocuk etkinlikleri platformu. 0-6 yaş çocuklar için atölyeler, tiyatrolar, spor aktiviteleri ve daha fazlası.',
+  description: 'Şehrindeki Çocuk Etkinlikleri Haritası. 0-6 yaş çocuklar için atölyeler, tiyatrolar, spor aktiviteleri ve daha fazlası.',
   keywords: ['çocuk etkinlikleri', 'çocuk atölyesi', 'çocuk tiyatrosu', 'bebek aktiviteleri', 'İstanbul çocuk', 'Ankara çocuk'],
   authors: [{ name: 'MiniMaply' }],
   creator: 'MiniMaply',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: 'https://minimaply.vercel.app',
     siteName: 'MiniMaply',
     title: 'MiniMaply - Çocuk Etkinlikleri',
-    description: 'Türkiye\'nin en kapsamlı çocuk etkinlikleri platformu. Küçük Kaşifler, Büyük Keşifler!',
+    description: 'Şehrindeki Çocuk Etkinlikleri Haritası',
     images: [
       {
         url: '/og-image.png',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'MiniMaply - Çocuk Etkinlikleri',
-    description: 'Türkiye\'nin en kapsamlı çocuk etkinlikleri platformu.',
+    description: 'Şehrindeki Çocuk Etkinlikleri Haritası',
     images: ['/og-image.png'],
   },
   
