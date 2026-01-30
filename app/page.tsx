@@ -244,8 +244,8 @@ export default function HomePage() {
               </div>
               
               <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight text-warm-900">
-                Küçük Kaşifler,
-                <span className="block text-primary-600">Büyük Keşifler!</span>
+                Şehrindeki
+                <span className="block text-primary-600">Çocuk Etkinlikleri Haritası</span>
               </h1>
               
               <p className="text-lg text-warm-600 mb-8 leading-relaxed">
@@ -491,7 +491,7 @@ export default function HomePage() {
                 <span className="font-bold text-lg">MiniMaply</span>
               </Link>
               <p className="text-warm-400 text-sm leading-relaxed">
-                Küçük Kaşifler, Büyük Keşifler!
+                Şehrindeki Çocuk Etkinlikleri Haritası
               </p>
             </div>
             <div>
