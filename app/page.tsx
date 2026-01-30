@@ -53,49 +53,53 @@ export default function HomePage() {
       <header className="bg-white border-b border-warm-100 sticky top-0 z-50">
         <div className="container-wide">
           {/* 4️⃣ 44px TAP ALANI - Header yüksekliği artırıldı */}
-          <div className="flex justify-between items-center h-16 md:h-24">
+          <div className="flex justify-between items-center h-16 md:h-20">
             
-            {/* Hamburger - 44px min tap */}
-            <button 
-              onClick={() => setMenuOpen(true)}
-              className="md:hidden p-2.5 -ml-2 text-warm-600 hover:text-primary-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Menü"
-            >
-              <Menu className="w-6 h-6" strokeWidth={2.5} />
-            </button>
-
-            {/* Logo - Büyük */}
-            <Link href="/" className="flex items-center gap-3 md:gap-5 group">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 md:gap-4 group">
               <Image 
                 src="/logo-icon.png" 
                 alt="MiniMaply" 
                 width={150}
                 height={150}
-                className="w-auto h-12 md:h-16 object-contain group-hover:scale-105 transition-transform"
+                className="w-auto h-10 md:h-14 object-contain group-hover:scale-105 transition-transform"
               />
-              <span className="font-bold text-2xl md:text-3xl text-primary-700">MiniMaply</span>
+              <span className="font-bold text-xl md:text-2xl text-primary-700">MiniMaply</span>
             </Link>
 
-            {/* Search button - 44px min tap */}
-            <button 
-              onClick={() => setFilterOpen(true)}
-              className="md:hidden p-2.5 -mr-2 text-warm-600 hover:text-primary-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Ara"
-            >
-              <Search className="w-6 h-6" strokeWidth={2.5} />
-            </button>
+            {/* Mobile nav - ikonlar */}
+            <div className="flex md:hidden items-center gap-1">
+              <button 
+                onClick={() => setFilterOpen(true)}
+                className="p-2.5 text-warm-600 hover:text-primary-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Ara"
+              >
+                <Search className="w-5 h-5" strokeWidth={2.5} />
+              </button>
+              <Link 
+                href="/harita"
+                className="p-2.5 text-warm-600 hover:text-primary-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Harita"
+              >
+                <Map className="w-5 h-5" strokeWidth={2.5} />
+              </Link>
+              <button 
+                onClick={() => setMenuOpen(true)}
+                className="p-2.5 text-warm-600 hover:text-primary-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Menü"
+              >
+                <Menu className="w-5 h-5" strokeWidth={2.5} />
+              </button>
+            </div>
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/etkinlikler" className="text-warm-600 hover:text-primary-600 font-medium transition-colors">
-                Etkinlikler
-              </Link>
-              <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-medium transition-colors">
+            <nav className="hidden md:flex items-center gap-5">
+              <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-semibold text-sm transition-colors">
                 🗺️ Haritada Keşfet
               </Link>
               <button 
                 onClick={() => setAuthModalOpen(true)}
-                className="text-warm-600 hover:text-primary-600 font-medium transition-colors"
+                className="text-warm-600 hover:text-primary-600 font-semibold text-sm transition-colors"
               >
                 Giriş Yap
               </button>
@@ -124,27 +128,40 @@ export default function HomePage() {
               </button>
             </div>
             <nav className="p-4 space-y-1">
-              {/* 4️⃣ 44px TAP ALANI - Menü itemları */}
-              <MenuLink href="/etkinlikler" icon="📅" text="Etkinlikler" onClick={() => setMenuOpen(false)} />
+              {/* Ana linkler */}
+              <Link 
+                href="/etkinlikler" 
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary-50 text-primary-700 font-semibold min-h-[44px]"
+              >
+                <span className="text-lg">🔍</span>
+                <span className="text-sm">Etkinlik Bul</span>
+              </Link>
               <MenuLink href="/harita" icon="🗺️" text="Harita" onClick={() => setMenuOpen(false)} />
-              <MenuLink href="/kategoriler" icon="📂" text="Kategoriler" onClick={() => setMenuOpen(false)} />
+              <button 
+                onClick={() => {
+                  setMenuOpen(false)
+                  setAuthModalOpen(true)
+                }}
+                className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-warm-50 transition-colors min-h-[44px] w-full"
+              >
+                <span className="text-lg">👤</span>
+                <span className="font-medium text-warm-700 text-sm">Giriş Yap</span>
+              </button>
+              
+              <div className="pt-3 border-t border-warm-100 mt-3">
+                <p className="text-xs text-warm-400 mb-2 px-3 font-medium uppercase tracking-wide">Kategoriler</p>
+                <MenuLink href="/etkinlikler?kategori=atolye" icon="🎨" text="Atölye" onClick={() => setMenuOpen(false)} />
+                <MenuLink href="/etkinlikler?kategori=tiyatro" icon="🎭" text="Tiyatro" onClick={() => setMenuOpen(false)} />
+                <MenuLink href="/etkinlikler?kategori=spor" icon="⚽" text="Spor" onClick={() => setMenuOpen(false)} />
+                <MenuLink href="/etkinlikler?kategori=muzik" icon="🎵" text="Müzik" onClick={() => setMenuOpen(false)} />
+              </div>
+              
               <div className="pt-3 border-t border-warm-100 mt-3">
                 <p className="text-xs text-warm-400 mb-2 px-3 font-medium uppercase tracking-wide">Şehirler</p>
                 {cities.map(city => (
                   <MenuLink key={city.slug} href={`/etkinlikler?sehir=${city.slug}`} icon="📍" text={city.name} onClick={() => setMenuOpen(false)} />
                 ))}
-              </div>
-              <div className="pt-3 border-t border-warm-100 mt-3">
-                <button 
-                  onClick={() => {
-                    setMenuOpen(false)
-                    setAuthModalOpen(true)
-                  }}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-warm-50 transition-colors min-h-[44px] w-full"
-                >
-                  <span className="text-lg">👤</span>
-                  <span className="font-medium text-warm-700 text-sm">Giriş Yap</span>
-                </button>
               </div>
             </nav>
           </div>
