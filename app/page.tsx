@@ -31,10 +31,11 @@ const featuredEvents = [
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)
+  const [authModalOpen, setAuthModalOpen] = useState(false)
 
   // 1️⃣ SCROLL LOCK - Menü/filtre açıkken body scroll engelle
   useEffect(() => {
-    if (menuOpen || filterOpen) {
+    if (menuOpen || filterOpen || authModalOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
@@ -42,7 +43,7 @@ export default function HomePage() {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [menuOpen, filterOpen])
+  }, [menuOpen, filterOpen, authModalOpen])
 
   return (
     // 2️⃣ SAFE-AREA PADDING - Alt bar içerikleri kapatmasın
@@ -85,13 +86,19 @@ export default function HomePage() {
             </button>
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-6">
               <Link href="/etkinlikler" className="text-warm-600 hover:text-primary-600 font-medium transition-colors">
                 Etkinlikler
               </Link>
               <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-medium transition-colors">
                 🗺️ Haritada Keşfet
               </Link>
+              <button 
+                onClick={() => setAuthModalOpen(true)}
+                className="text-warm-600 hover:text-primary-600 font-medium transition-colors"
+              >
+                Giriş Yap
+              </button>
               {/* 4️⃣ 44px TAP ALANI */}
               <Link href="/etkinlikler" className="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm h-11 px-6 rounded-xl transition-all flex items-center">
                 Etkinlik Bul
@@ -126,6 +133,18 @@ export default function HomePage() {
                 {cities.map(city => (
                   <MenuLink key={city.slug} href={`/etkinlikler?sehir=${city.slug}`} icon="📍" text={city.name} onClick={() => setMenuOpen(false)} />
                 ))}
+              </div>
+              <div className="pt-3 border-t border-warm-100 mt-3">
+                <button 
+                  onClick={() => {
+                    setMenuOpen(false)
+                    setAuthModalOpen(true)
+                  }}
+                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-warm-50 transition-colors min-h-[44px] w-full"
+                >
+                  <span className="text-lg">👤</span>
+                  <span className="font-medium text-warm-700 text-sm">Giriş Yap</span>
+                </button>
               </div>
             </nav>
           </div>
@@ -525,6 +544,63 @@ export default function HomePage() {
           <BottomNavItem href="/profil" icon={<User className="w-5 h-5" strokeWidth={2} />} label="Profil" />
         </div>
       </nav>
+
+      {/* ==================== AUTH MODAL ==================== */}
+      {authModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setAuthModalOpen(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden">
+            <div className="p-5 border-b border-warm-100 flex items-center justify-between">
+              <h3 className="font-bold text-lg text-warm-800">Giriş Yap</h3>
+              <button onClick={() => setAuthModalOpen(false)} className="p-2 text-warm-500 hover:text-warm-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-warm-600 text-center mb-6">Sen kimsin?</p>
+              
+              <div className="space-y-3">
+                <button 
+                  onClick={() => {
+                    setAuthModalOpen(false)
+                    alert('Aile girişi yakında aktif olacak!')
+                  }}
+                  className="w-full p-4 border-2 border-warm-200 hover:border-primary-300 rounded-xl flex items-center gap-4 transition-all group"
+                >
+                  <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    👨‍👩‍👧
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold text-warm-800">Aileyim</p>
+                    <p className="text-sm text-warm-500">Etkinlik keşfetmek istiyorum</p>
+                  </div>
+                </button>
+
+                <button 
+                  onClick={() => {
+                    setAuthModalOpen(false)
+                    alert('Etkinlik veren başvurusu yakında aktif olacak!')
+                  }}
+                  className="w-full p-4 border-2 border-warm-200 hover:border-primary-300 rounded-xl flex items-center gap-4 transition-all group"
+                >
+                  <div className="w-12 h-12 bg-coral-50 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    🏫
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold text-warm-800">Etkinlik Düzenleyicisiyim</p>
+                    <p className="text-sm text-warm-500">Etkinlik eklemek / yönetmek istiyorum</p>
+                  </div>
+                </button>
+              </div>
+              
+              <p className="text-xs text-warm-400 text-center mt-6">
+                Devam ederek <Link href="/gizlilik" className="text-primary-600 hover:underline">Gizlilik Politikası</Link>'nı kabul etmiş olursunuz.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

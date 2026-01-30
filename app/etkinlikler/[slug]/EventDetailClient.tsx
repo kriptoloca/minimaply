@@ -2,8 +2,22 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { MapPin, Clock, Calendar, Users, ArrowLeft, Share2, Heart, Phone, ExternalLink, ChevronRight, AlertCircle, CheckCircle, Link2, Lightbulb, X, Flag } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+
+// Mini harita için dynamic import
+const MiniMap = dynamic(() => import('./MiniMap'), { 
+  ssr: false,
+  loading: () => (
+    <div className="aspect-[2/1] bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center">
+      <div className="text-center">
+        <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-2 animate-pulse" />
+        <span className="text-sm text-primary-600">Harita yükleniyor...</span>
+      </div>
+    </div>
+  )
+})
 
 interface Event {
   id: string
@@ -345,12 +359,12 @@ export default function EventDetailClient({ slug }: { slug: string }) {
               </div>
               
               {event.lat && event.lng && (
-                <Link href={`/harita?lat=${event.lat}&lng=${event.lng}`} className="mt-3 block aspect-[2/1] bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl overflow-hidden relative group">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-                      <span className="text-sm text-primary-600 font-medium group-hover:underline">Haritada Görüntüle</span>
-                    </div>
+                <Link href={`/harita?lat=${event.lat}&lng=${event.lng}`} className="mt-3 block rounded-xl overflow-hidden relative group">
+                  <MiniMap lat={event.lat} lng={event.lng} />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <span className="bg-white/90 backdrop-blur-sm text-primary-600 font-medium px-4 py-2 rounded-full text-sm shadow-lg">
+                      🗺️ Haritada Aç
+                    </span>
                   </div>
                 </Link>
               )}
