@@ -89,8 +89,8 @@ export default function HomePage() {
               <Link href="/etkinlikler" className="text-warm-600 hover:text-primary-600 font-medium transition-colors">
                 Etkinlikler
               </Link>
-              <Link href="/harita" className="text-warm-600 hover:text-primary-600 font-medium transition-colors">
-                Harita
+              <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-medium transition-colors">
+                🗺️ Haritada Keşfet
               </Link>
               {/* 4️⃣ 44px TAP ALANI */}
               <Link href="/etkinlikler" className="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm h-11 px-6 rounded-xl transition-all flex items-center">
@@ -238,15 +238,9 @@ export default function HomePage() {
         <div className="container-wide py-16 lg:py-20 relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="max-w-xl">
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="inline-flex items-center gap-2 bg-white border border-primary-100 rounded-full px-4 py-2">
-                  <Sparkles className="w-4 h-4 text-primary-500" strokeWidth={2.5} />
-                  <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
-                </div>
-                <Link href="/harita" className="inline-flex items-center gap-2 bg-primary-50 hover:bg-primary-100 text-primary-700 font-semibold px-4 py-2 rounded-full transition-all">
-                  <Map className="w-4 h-4" strokeWidth={2.5} />
-                  🗺️ Haritada Keşfet
-                </Link>
+              <div className="inline-flex items-center gap-2 bg-white border border-primary-100 rounded-full px-4 py-2 mb-6">
+                <Sparkles className="w-4 h-4 text-primary-500" strokeWidth={2.5} />
+                <span className="text-sm font-medium text-primary-700">0-6 yaş için özel</span>
               </div>
               
               <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight">
