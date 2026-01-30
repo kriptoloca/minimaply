@@ -93,18 +93,18 @@ export default function HomePage() {
             </div>
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-5">
-              <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-semibold text-sm transition-colors">
+            <nav className="hidden md:flex items-center gap-6">
+              <Link href="/harita" className="inline-flex items-center gap-1.5 text-warm-600 hover:text-primary-600 font-semibold transition-colors">
                 🗺️ Haritada Keşfet
               </Link>
               <button 
                 onClick={() => setAuthModalOpen(true)}
-                className="text-warm-600 hover:text-primary-600 font-semibold text-sm transition-colors"
+                className="text-warm-600 hover:text-primary-600 font-semibold transition-colors"
               >
                 Giriş Yap
               </button>
               {/* 4️⃣ 44px TAP ALANI */}
-              <Link href="/etkinlikler" className="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm h-11 px-6 rounded-xl transition-all flex items-center">
+              <Link href="/etkinlikler" className="bg-primary-500 hover:bg-primary-600 text-white font-semibold h-12 px-6 rounded-xl transition-all flex items-center">
                 Etkinlik Bul
               </Link>
             </nav>
