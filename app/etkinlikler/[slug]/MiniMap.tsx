@@ -4,7 +4,6 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-// Leaflet icon fix
 delete (L.Icon.Default.prototype as any)._getIconUrl
 L.Icon.Default.mergeOptions({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -19,7 +18,7 @@ interface MiniMapProps {
 
 export default function MiniMap({ lat, lng }: MiniMapProps) {
   return (
-    <div className="aspect-[2/1] rounded-xl overflow-hidden">
+    <div className="aspect-[2/1] rounded-xl overflow-hidden relative z-0">
       <MapContainer
         center={[lat, lng]}
         zoom={15}
@@ -31,7 +30,7 @@ export default function MiniMap({ lat, lng }: MiniMapProps) {
         touchZoom={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          attribution='&copy; OpenStreetMap'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker position={[lat, lng]} />

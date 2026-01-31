@@ -1,71 +1,13 @@
 import type { Metadata } from 'next'
-import { Nunito } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
+import { AuthProvider } from '@/lib/auth-context'
 
-const nunito = Nunito({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-nunito',
-})
+const inter = Inter({ subsets: ['latin', 'latin-ext'] })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'MiniMaply - Çocuk Etkinlikleri',
-    template: '%s | MiniMaply'
-  },
-  description: 'Şehrindeki Çocuk Etkinlikleri Haritası. 0-6 yaş çocuklar için atölyeler, tiyatrolar, spor aktiviteleri ve daha fazlası.',
-  keywords: ['çocuk etkinlikleri', 'çocuk atölyesi', 'çocuk tiyatrosu', 'bebek aktiviteleri', 'İstanbul çocuk', 'Ankara çocuk'],
-  authors: [{ name: 'MiniMaply' }],
-  creator: 'MiniMaply',
-  
-  // Open Graph - Facebook, WhatsApp, LinkedIn
-  openGraph: {
-    type: 'website',
-    locale: 'tr_TR',
-    url: 'https://minimaply.vercel.app',
-    siteName: 'MiniMaply',
-    title: 'MiniMaply - Çocuk Etkinlikleri',
-    description: 'Şehrindeki Çocuk Etkinlikleri Haritası',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'MiniMaply - Çocuk Etkinlikleri',
-      },
-    ],
-  },
-  
-  // Twitter Card
-  twitter: {
-    card: 'summary_large_image',
-    title: 'MiniMaply - Çocuk Etkinlikleri',
-    description: 'Şehrindeki Çocuk Etkinlikleri Haritası',
-    images: ['/og-image.png'],
-  },
-  
-  // Diğer
-  robots: {
-    index: true,
-    follow: true,
-  },
-  
-  // iOS
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'MiniMaply',
-  },
-  
-  // Viewport
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-  
-  // Theme
-  themeColor: '#22B88A',
+  title: 'MiniMaply - Çocuk Etkinlikleri Haritası',
+  description: 'Şehrindeki çocuk etkinliklerini keşfet. 0-6 yaş için atölye, tiyatro, müzik, spor etkinlikleri.',
 }
 
 export default function RootLayout({
@@ -75,12 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/logo-icon.png" />
-      </head>
-      <body className={`${nunito.variable} font-sans antialiased`}>
-        {children}
+      <body className={inter.className}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
